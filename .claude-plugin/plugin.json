@@ -7,5 +7,13 @@
   },
   "skills": "./plugins/rn-claude/skills/",
   "commands": "./plugins/rn-claude/commands/",
-  "agents": "./plugins/rn-claude/agents/"
+  "agents": [
+    "./plugins/rn-claude/agents/orchestrator.md",
+    "./plugins/rn-claude/agents/app-architect.md",
+    "./plugins/rn-claude/agents/screen-developer.md",
+    "./plugins/rn-claude/agents/navigation-architect.md",
+    "./plugins/rn-claude/agents/backend-integrator.md",
+    "./plugins/rn-claude/agents/eas-engineer.md",
+    "./plugins/rn-claude/agents/code-reviewer.md"
+  ]
 }
