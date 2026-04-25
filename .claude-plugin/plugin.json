@@ -1,0 +1,9 @@
+{
+  "name": "rn-claude",
+  "description": "Claude Code plugin for building React Native apps with Expo",
+  "version": "1.0.0",
+  "pluginRoot": "../plugins/rn-claude",
+  "skills": "skills",
+  "commands": "commands",
+  "agents": "agents"
+}
