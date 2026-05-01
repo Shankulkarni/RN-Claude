@@ -95,6 +95,8 @@ import * as Updates from 'expo-updates'
 import { useEffect } from 'react'
 
 export default function RootLayout() {
+  // OTA update check is an SDK imperative call, not server data fetching --
+  // React Query doesn't apply here. This is the only acceptable useEffect+async pattern.
   useEffect(() => {
     async function checkUpdate() {
       if (__DEV__) return

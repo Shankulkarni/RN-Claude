@@ -33,15 +33,16 @@ else
   done
 
   # autoIncrement on production
-  if python3 -c "
-import json, sys
-data = json.load(open('eas.json'))
-prod = data.get('build', {}).get('production', {})
-sys.exit(0 if prod.get('autoIncrement') else 1)
-" 2>/dev/null; then
-    pass "autoIncrement: true on production profile"
+  if command -v jq &>/dev/null; then
+    if jq -e '.build.production.autoIncrement == true' eas.json &>/dev/null 2>&1; then
+      pass "autoIncrement: true on production profile"
+    else
+      warn "autoIncrement not set on production profile"
+    fi
+  elif grep -q '"autoIncrement".*true' eas.json 2>/dev/null; then
+    pass "autoIncrement: true found (verify it is on the production profile)"
   else
-    warn "autoIncrement not set on production profile"
+    warn "autoIncrement not set -- add to production profile in eas.json"
   fi
 fi
 

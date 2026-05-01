@@ -95,6 +95,7 @@ export default function RootLayout() {
 import { useEffect, useRef } from 'react'
 import * as Notifications from 'expo-notifications'
 import { router } from 'expo-router'
+import type { Href } from 'expo-router'
 import { registerForPushNotifications } from '@/libs/notifications'
 
 export function useNotifications() {
@@ -109,15 +110,16 @@ export function useNotifications() {
     })
 
     // Fires when notification received in foreground
-    notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
-      console.log('Notification received:', notification)
+    notificationListener.current = Notifications.addNotificationReceivedListener(_notification => {
+      // handle foreground notification -- e.g. update badge count or show in-app toast
     })
 
     // Fires when user taps notification
     responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
       const data = response.notification.request.content.data
       if (data.screen) {
-        router.push(data.screen as never)
+        // notification payload is untyped -- validate screen values server-side before sending
+        router.push(data.screen as Href)
       }
     })
 
@@ -143,13 +145,16 @@ export default function RootLayout() {
 import * as Notifications from 'expo-notifications'
 import { useEffect } from 'react'
 import { router } from 'expo-router'
+import type { Href } from 'expo-router'
 
 export default function RootLayout() {
   useEffect(() => {
     // App opened from a notification
     Notifications.getLastNotificationResponseAsync().then(response => {
-      if (response?.notification.request.content.data.screen) {
-        router.push(response.notification.request.content.data.screen as never)
+      const screen = response?.notification.request.content.data.screen
+      if (screen) {
+        // cold-start navigation from notification -- payload is untyped, validate screen values server-side
+        router.push(screen as Href)
       }
     })
   }, [])

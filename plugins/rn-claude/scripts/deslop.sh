@@ -40,16 +40,26 @@ hit "CRITICAL" "TouchableOpacity|TouchableHighlight" "TouchableOpacity/Touchable
 hit "CRITICAL" "PanResponder" "PanResponder (use Gesture Handler v2 GestureDetector)"
 hit "CRITICAL" "useEffect\([^)]*\)\s*\{[^}]*fetch\(" "fetch() inside useEffect (use React Query)"
 hit "CRITICAL" "https?://[a-zA-Z0-9]" "Hardcoded URL in source (use EXPO_PUBLIC_ env var)"
-hit "CRITICAL" "console\.log" "console.log in worklet (use process.env check or remove)"
-hit "CRITICAL" "\{[^}]*&&\s*[^}]*\}" "Potential && with falsy value in JSX (use ternary)"
+hit "CRITICAL" "\{[^{}]*&&\s*<[A-Z]" "&& with JSX component -- renders falsy values like 0 (use ternary or Boolean())"
+
+# fetch() outside src/libs/ -- hit() can't exclude dirs, check separately
+fetch_hits=$(grep -rn --include="*.ts" --include="*.tsx" --exclude-dir="libs" --exclude-dir="test" -E "\bfetch\(" $TARGETS 2>/dev/null || true)
+if [ -n "$fetch_hits" ]; then
+  echo ""
+  echo "[CRITICAL] fetch() outside src/libs/ -- use axios instance instead"
+  echo "$fetch_hits"
+  critical=$((critical + 1))
+fi
 
 header "MEDIUM -- should fix"
 
+hit "MEDIUM" "console\.(log|warn)" "console.log/warn in src/ -- remove before ship (fatal in Reanimated worklets)"
 hit "MEDIUM" "form\.watch\(" "form.watch() -- use useWatch() instead"
-hit "MEDIUM" "^interface " "interface declaration -- use type instead"
+hit "MEDIUM" "interface [A-Z]" "interface declaration -- use type instead"
 hit "MEDIUM" "from ['\"]react-native['\"].*Image[^C]|Image\}" "RN Image component -- use expo-image"
 hit "MEDIUM" "router\.push\(['\"]" "String navigation -- use typed route object"
 hit "MEDIUM" "style=\{" "Inline style prop -- use className with NativeWind"
+hit "MEDIUM" "TODO|FIXME|HACK" "TODO/FIXME/HACK -- resolve before release"
 
 echo ""
 echo "====================="

@@ -16,22 +16,24 @@ bash "${CLAUDE_PLUGIN_ROOT}/scripts/deslop.sh" ${ARGUMENT:-.}
 ### Critical (exit 1, block deploy)
 - `NativeModules` usage -- legacy bridge, banned in New Architecture
 - `requireNativeComponent` -- use `codegenNativeComponent` instead
-- `console.log` in worklet functions -- crashes New Architecture runtime
-- Hardcoded API URLs (`https://api.`, `http://localhost`)
-- Hardcoded secrets (API keys, tokens, passwords, JWT)
-- `throw new Error('TODO')` / empty function bodies
-- Empty catch blocks `catch (e) {}`
+- `UIManager` usage -- legacy bridge, banned
 - `AsyncStorage` usage -- banned, use MMKV or SecureStore
 - `TouchableOpacity` / `TouchableHighlight` -- banned, use Pressable
-- `fetch(` directly -- use axios
-- `useEffect` with fetch -- use React Query
+- `PanResponder` -- banned, use Gesture Handler v2 `GestureDetector`
+- `fetch(` outside `src/libs/` -- use axios instance
+- `useEffect` with `fetch(` -- use React Query
+- Hardcoded URLs (`https://`, `http://`) in source -- use `EXPO_PUBLIC_` env vars
+- `{expr && <Component>}` -- renders `0` or `false`; use ternary or `Boolean()`
 
 ### Medium (warn, review before release)
-- `console.log` / `console.warn` anywhere in `src/`
+- `console.log` / `console.warn` anywhere in `src/` -- crashes in Reanimated worklets, banned everywhere
 - `TODO` / `FIXME` / `HACK` comments
 - `form.watch(` -- use `useWatch`
-- Missing `accessibilityRole` on interactive elements
+- `interface` declaration -- use `type` instead
+- RN `Image` from `react-native` -- use `expo-image`
 - `router.push('/` string -- use typed routes
+- `style={}` inline prop -- use `className` with NativeWind
+- Missing `accessibilityRole` on interactive elements
 
 ### Low (info)
 - `eslint-disable` comments
