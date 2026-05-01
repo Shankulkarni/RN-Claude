@@ -29,13 +29,16 @@ cd MyApp
 
 ```bash
 bunx expo install expo-router react-native-safe-area-context react-native-screens expo-linking expo-constants expo-status-bar
-bunx expo install nativewind tailwindcss react-native-reanimated react-native-gesture-handler
+bunx expo install nativewind react-native-reanimated react-native-gesture-handler
+bun add tailwindcss@^3.4.0
 bunx expo install @tanstack/react-query axios
 bunx expo install react-hook-form @hookform/resolvers zod zod-empty
 bunx expo install expo-secure-store react-native-mmkv
 bunx expo install expo-image
 bun add zustand-x mutative
 ```
+
+> **Note:** Install `tailwindcss` separately with `bun add tailwindcss@^3.4.0` — do NOT use `bunx expo install tailwindcss` as it resolves Tailwind v4 which NativeWind v4 does not support. NativeWind v4 requires Tailwind CSS v3.
 
 ## Step 3: `app.json`
 
@@ -57,8 +60,7 @@ bun add zustand-x mutative
     },
     "plugins": [
       "expo-router",
-      "expo-secure-store",
-      ["nativewind/metro", {}]
+      "expo-secure-store"
     ]
   }
 }
