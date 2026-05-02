@@ -32,6 +32,7 @@
 │                                                                            │
 │   /plugin marketplace add Shankulkarni/claude-plugin-marketplace           │
 │   /plugin install rn-claude@shankulkarni                                   │
+│   ↳ restart Claude Code after install                                      │
 │   /rn-claude:setup                                                         │
 │                                                                            │
 │   That's it. Every screen. Every feature. Same standards.                  │
@@ -209,7 +210,10 @@ Uses Claude Code's native plugin system. No custom scripts needed.
 # 2. Install the plugin
 /plugin install rn-claude@shankulkarni
 
-# 3. Run setup in Claude Code
+# 3. Restart Claude Code
+# (required for the plugin commands to become available)
+
+# 4. Run setup in Claude Code
 /rn-claude:setup
 ```
 
