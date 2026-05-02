@@ -1,7 +1,7 @@
 {
   "name": "rn-claude",
   "description": "Claude Code plugin for building React Native apps with Expo",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "author": {
     "name": "Utilities Studio"
   },
